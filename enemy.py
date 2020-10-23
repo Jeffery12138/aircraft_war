@@ -37,10 +37,13 @@ class SmallEnemy(Sprite):
 
 
 class MidEnemy(Sprite):
+    energy = 8
+
     def __init__(self, bg_size):
         super(MidEnemy, self).__init__()
 
         self.image = pygame.image.load("images/enemy2.png").convert_alpha()
+        self.image_hit = pygame.image.load("images/enemy2_hit.png").convert_alpha()
         self.destroy_images = []
         self.destroy_images.extend([
             pygame.image.load("images/enemy2_down1.png").convert_alpha(),
@@ -56,6 +59,8 @@ class MidEnemy(Sprite):
         self.rect.left = randint(0, self.width - self.rect.width)
         self.rect.top = randint(-10 * self.height, -self.height)
         self.mask = pygame.mask.from_surface(self.image)
+        self.energy = MidEnemy.energy
+        self.hit = False
 
     def move(self):
         if self.rect.top < self.height:
@@ -65,16 +70,22 @@ class MidEnemy(Sprite):
 
     def reset(self):
         self.active = True
+        self.hit = False
+        self.energy = MidEnemy.energy
         self.rect.left = randint(0, self.width - self.rect.width)
         self.rect.top = randint(-10 * self.height, -self.height)
 
 
 class BigEnemy(Sprite):
+
+    energy = 20
+
     def __init__(self, bg_size):
         super(BigEnemy, self).__init__()
 
         self.image1 = pygame.image.load("images/enemy3_n1.png").convert_alpha()
         self.image2 = pygame.image.load("images/enemy3_n2.png").convert_alpha()
+        self.image_hit = pygame.image.load("images/enemy3_hit.png").convert_alpha()
         self.destroy_images = []
         self.destroy_images.extend([
             pygame.image.load("images/enemy3_down1.png").convert_alpha(),
@@ -92,6 +103,8 @@ class BigEnemy(Sprite):
         self.rect.left = randint(0, self.width - self.rect.width)
         self.rect.top = randint(-15 * self.height, -5 * self.height)
         self.mask = pygame.mask.from_surface(self.image1)
+        self.energy = BigEnemy.energy
+        self.hit = False
 
     def move(self):
         if self.rect.top < self.height:
@@ -101,5 +114,7 @@ class BigEnemy(Sprite):
 
     def reset(self):
         self.active = True
+        self.hit = False
+        self.energy = BigEnemy.energy
         self.rect.left = randint(0, self.width - self.rect.width)
         self.rect.top = randint(-15 * self.height, -5 * self.height)

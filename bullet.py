@@ -8,7 +8,7 @@ class Bullet1(Sprite):
 
         self.image = pygame.image.load("images/bullet1.png").convert_alpha()
         self.rect = self.image.get_rect()
-        self.rect.left, self.rect.right = position
+        self.rect.left, self.rect.top = position
         self.speed = 12
         self.active = True
         self.mask = pygame.mask.from_surface(self.image)
@@ -19,5 +19,5 @@ class Bullet1(Sprite):
             self.active = False
 
     def reset(self, position):
-        self.rect.left, self.rect.right = position
+        self.rect.left, self.rect.top = position
         self.active = True

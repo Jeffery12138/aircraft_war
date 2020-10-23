@@ -18,6 +18,11 @@ pygame.display.set_caption("飞机大战 -- FishC Demo")
 
 background = pygame.image.load("images/background.png").convert()
 
+BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
+
+
 # 载入游戏音乐
 pygame.mixer.music.load("sound/game_music.ogg")
 pygame.mixer.music.set_volume(0.2)
@@ -133,23 +138,46 @@ def main():
         # 检测子弹是否击中敌机
         for b in bullet1:
             if b.active:
-                print(b)
                 b.move()
                 screen.blit(b.image, b.rect)
                 enemy_hit = pygame.sprite.spritecollide(b, enemies, False, pygame.sprite.collide_mask)
                 if enemy_hit:
                     b.active = False
                     for e in enemy_hit:
-                        e.active = False
+                        if e in mid_enemies or e in big_enemies:
+                            e.hit = True
+                            e.energy -= 1
+                            if e.energy == 0:
+                                e.active = False
+                        else:
+                            e.active = False
 
         # 绘制大型敌机
         for each in big_enemies:
             if each.active:
                 each.move()
-                if switch_image:
-                    screen.blit(each.image1, each.rect)
+                if each.hit:
+                    # 绘制被打到的特效
+                    screen.blit(each.image_hit, each.rect)
+                    each.hit = False
                 else:
-                    screen.blit(each.image2, each.rect)
+                    if switch_image:
+                        screen.blit(each.image1, each.rect)
+                    else:
+                        screen.blit(each.image2, each.rect)
+
+                # 绘制血槽
+                pygame.draw.line(screen, BLACK, (each.rect.left, each.rect.top - 5),
+                                 (each.rect.right, each.rect.top - 5), 2)
+                # 当生命大于20%显示绿色，否则显示红色
+                energy_remain = each.energy / enemy.BigEnemy.energy
+                if energy_remain > 0.2:
+                    energy_color = GREEN
+                else:
+                    energy_color = RED
+                pygame.draw.line(screen, energy_color, (each.rect.left, each.rect.top - 5),
+                                 (each.rect.left + int(each.rect.width * energy_remain), each.rect.top - 5), 2)
+
                 # 即将出现在画面中，播放音效
                 if each.rect.bottom == -50:
                     enemy3_fly_sound.play(-1)
@@ -168,7 +196,24 @@ def main():
         for each in mid_enemies:
             if each.active:
                 each.move()
-                screen.blit(each.image, each.rect)
+                if each.hit:
+                    screen.blit(each.image_hit, each.rect)
+                    each.hit = False
+                else:
+                    screen.blit(each.image, each.rect)
+
+                # 绘制血槽
+                pygame.draw.line(screen, BLACK, (each.rect.left, each.rect.top - 5),
+                                 (each.rect.right, each.rect.top - 5), 2)
+                # 当生命大于20%显示绿色，否则显示红色
+                energy_remain = each.energy / enemy.MidEnemy.energy
+                if energy_remain > 0.2:
+                    energy_color = GREEN
+                else:
+                    energy_color = RED
+                pygame.draw.line(screen, energy_color, (each.rect.left, each.rect.top - 5),
+                                 (each.rect.left + int(each.rect.width * energy_remain), each.rect.top - 5), 2)
+
             else:
                 # 毁灭
                 if not (delay % 3):
