@@ -4,7 +4,7 @@ from pygame.sprite import Sprite
 
 
 class SmallEnemy(Sprite):
-    def __init__(self, bg_size):
+    def __init__(self, ai_settings):
         super(SmallEnemy, self).__init__()
 
         self.image = pygame.image.load("images/enemy1.png").convert_alpha()
@@ -16,8 +16,8 @@ class SmallEnemy(Sprite):
             pygame.image.load("images/enemy1_down4.png").convert_alpha()
         ])
         self.rect = self.image.get_rect()
-        self.width = bg_size[0]
-        self.height = bg_size[1]
+        self.width = ai_settings.bg_width
+        self.height = ai_settings.bg_height
         self.speed = 2
         self.active = True
         self.rect.left = randint(0, self.width - self.rect.width)
@@ -39,7 +39,7 @@ class SmallEnemy(Sprite):
 class MidEnemy(Sprite):
     energy = 8
 
-    def __init__(self, bg_size):
+    def __init__(self, ai_settings):
         super(MidEnemy, self).__init__()
 
         self.image = pygame.image.load("images/enemy2.png").convert_alpha()
@@ -52,8 +52,8 @@ class MidEnemy(Sprite):
             pygame.image.load("images/enemy2_down4.png").convert_alpha()
         ])
         self.rect = self.image.get_rect()
-        self.width = bg_size[0]
-        self.height = bg_size[1]
+        self.width = ai_settings.bg_width
+        self.height = ai_settings.bg_height
         self.speed = 1
         self.active = True
         self.rect.left = randint(0, self.width - self.rect.width)
@@ -80,7 +80,7 @@ class BigEnemy(Sprite):
 
     energy = 20
 
-    def __init__(self, bg_size):
+    def __init__(self, ai_settings):
         super(BigEnemy, self).__init__()
 
         self.image1 = pygame.image.load("images/enemy3_n1.png").convert_alpha()
@@ -96,8 +96,8 @@ class BigEnemy(Sprite):
             pygame.image.load("images/enemy3_down6.png").convert_alpha()
         ])
         self.rect = self.image1.get_rect()
-        self.width = bg_size[0]
-        self.height = bg_size[1]
+        self.width = ai_settings.bg_width
+        self.height = ai_settings.bg_height
         self.speed = 1
         self.active = True
         self.rect.left = randint(0, self.width - self.rect.width)
